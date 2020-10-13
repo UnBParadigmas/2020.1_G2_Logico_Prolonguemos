@@ -1,0 +1,21 @@
+version: '3.5'
+
+volumes:
+  mongo_db:
+  mongo_dump:
+
+services:
+
+  mongo:
+    image: mongo:4.1.13
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_db:/data/db
+      - mongo_dump:/dump
+      - ./yelp:/data/yelp
+
+  # prolog:
+  #   build: .
+  #   network_mode: host
