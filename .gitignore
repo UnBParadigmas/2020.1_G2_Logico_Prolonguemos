@@ -171,4 +171,6 @@ stage/
 
 
 
-*.tar
+yelp/*.tar
+yelp/*.json
+yelp/*.pdf

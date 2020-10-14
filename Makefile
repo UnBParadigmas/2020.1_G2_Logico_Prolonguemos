@@ -6,5 +6,3 @@ lib:
 db:
     tar -xf yelp/yelp_dataset.tar -C yelp/
 	docker-compose exec mongo mongoimport -d yelp -c business /data/yelp/yelp_academic_dataset_business.json
-
-

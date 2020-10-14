@@ -41,6 +41,11 @@ Afim de não ter nenhum tipo de impasse optamos por criar um docker para podermo
 ## Uso
 Para utilizar nosso projeto, primeiramente é necessário estar rodando em sua maquina o docker (...)
 
+1. Dataset da yelp
+1. subir o mongo
+1. make db
+1. make lib
+
 ## Vídeo
 Adicione 1 ou mais vídeos com a execução do projeto.
 
@@ -54,11 +59,7 @@ __OBS__: Para que seja realizado o download do Dataset o site necessita de algun
 
 ## Fontes
 
-#### YELP
-- https://www.yelp.com/dataset
-
-#### DOCKER
-- https://docs.docker.com/
-
-#### MONGO
-- https://www.mongodb.com/
+1. [Yelp Dataset]( https://www.yelp.com/dataset)
+1. [Docker](https://docs.docker.com/)
+1. [Mongo DB](https://www.mongodb.com/)
+1. [Prolongo](https://github.com/khueue/prolongo)
