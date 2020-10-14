@@ -30,7 +30,6 @@ build
 INDEX.pl
 packages/Makefile
 .pkg-config
-Makefile
 include
 lib
 bin
