@@ -7,7 +7,7 @@ volumes:
 services:
 
   mongo:
-    image: mongo:4.1.13
+    image: mongo:3.2.21
     restart: unless-stopped
     ports:
       - 27017:27017
