@@ -21,9 +21,14 @@ search(Query, Docs):-
 get_city_cat([], _).
 get_city_cat([City|Cities], State):-
     search([state-State, city-City], Docs),
-    CatDict = _{},
+    CatDict = city{},
+    write_ln(City),
     print_cat(Docs, CatDict),
     get_city_cat(Cities, State).
+
+increment(DictIn,DictOut,Key) :-
+    (get_dict(Key,DictIn,X) -> succ(X,XX) ; XX=1),
+    put_dict(Key,DictIn,XX,DictOut).
 
 % {
 %     city1: {
@@ -36,7 +41,6 @@ get_city_cat([City|Cities], State):-
 %     }
 % }
 
-
 get_cities([], Cities, A) :- A = Cities.
 get_cities([Doc|Docs], Cities, A):-
     bson:doc_get(Doc, city, City),
@@ -48,14 +52,19 @@ print_cat([Doc|Docs], CatDict) :-
     bson:doc_get(Doc, categories, Categories),
     get_categories(Categories, Value),
     atomic_list_concat(SplitedCategories,', ', Value),
-    add_cat_to_dict(SplitedCategories, CatDict),
-    % write_ln(SplitedCategories),
+    add_cat_to_dict(SplitedCategories, CatDict, B),
+    write_ln(B),
     print_cat(Docs, CatDict).
 
-% add_cat_to_dict([], _).
-% add_cat_to_dict([Cat|Cats], CatDict):-
-%     CatDict.put([z=0]),
-%     write_ln(CatDict).
+
+
+add_cat_to_dict([], CatDict, B) :- B = CatDict.
+add_cat_to_dict([Cat|Cats], CatDict, B):-
+    % CatDict = city{x:1}.put([x=0]),
+    increment(CatDict, NewDict, Cat),
+    % write_ln(CatDict),
+    % write_ln(CatDict),
+    add_cat_to_dict(Cats, NewDict, B).
 
 
 get_categories(+null, Ret) :- Ret = ''.
