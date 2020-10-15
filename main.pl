@@ -21,7 +21,8 @@ search(Query, Docs):-
 get_city_cat([], _).
 get_city_cat([City|Cities], State):-
     search([state-State, city-City], Docs),
-    print_cat(Docs),
+    CatDict = _{},
+    print_cat(Docs, CatDict),
     get_city_cat(Cities, State).
 
 % {
@@ -35,19 +36,27 @@ get_city_cat([City|Cities], State):-
 %     }
 % }
 
+
 get_cities([], Cities, A) :- A = Cities.
 get_cities([Doc|Docs], Cities, A):-
     bson:doc_get(Doc, city, City),
     ord_add_element(Cities, City, NewSet),    
     get_cities(Docs, NewSet, A).
 
-print_cat([]).
-print_cat([Doc|Docs]) :-
+print_cat([], _).
+print_cat([Doc|Docs], CatDict) :-
     bson:doc_get(Doc, categories, Categories),
     get_categories(Categories, Value),
     atomic_list_concat(SplitedCategories,', ', Value),
-    write_ln(SplitedCategories),
-    print_cat(Docs).
+    add_cat_to_dict(SplitedCategories, CatDict),
+    % write_ln(SplitedCategories),
+    print_cat(Docs, CatDict).
+
+% add_cat_to_dict([], _).
+% add_cat_to_dict([Cat|Cats], CatDict):-
+%     CatDict.put([z=0]),
+%     write_ln(CatDict).
+
 
 get_categories(+null, Ret) :- Ret = ''.
 get_categories(Value, Ret) :-
