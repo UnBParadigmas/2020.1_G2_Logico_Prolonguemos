@@ -45,6 +45,23 @@ Para utilizar nosso projeto, primeiramente é necessário estar rodando em sua m
 1. subir o mongo
 1. make db
 1. make lib
+1. Rodar make nas pastas lib
+* Bson  
+``` sh
+cd lib/prolog-bson/
+make
+```
+* Prolongo
+``` sh
+cd lib/prolongo/
+make
+```
+
+### Rodar o projeto 
+Na pasta raiz rode:
+``` sh
+swipl main.pl
+```
 
 ## Vídeo
 Adicione 1 ou mais vídeos com a execução do projeto.
