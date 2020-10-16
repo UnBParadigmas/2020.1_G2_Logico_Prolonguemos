@@ -21,32 +21,22 @@ search(Query, Docs):-
     mongo:free_connection(Connection).
 
 sort_best(Dict, Keys, Category) :-
-    write_ln("sorteeee"),
-    Best_city = "Gama",
-    Best_star = 0,
-    loop(Keys, Dict, Category, Best_star, Best_city),
-    write_ln(Best_city),
-    write_ln(Best_star). 
+    write('Category: '),
+    writeln(Category),    
+    Best_city = "",
+    Best_star = 0.0,
+    loop(Keys, Dict, Category, Best_star, Best_city).
 
-loop([], _, _, _, _) :- write_ln("lupi").
+loop([], _, _, Best_star, Best_city) :- write_ln(Best_city), write_ln(Best_star).
 loop([City|Cities], Dict, Category, Best_star, Best_city) :-
-    write_ln("oi"),
     get_dict(City, Dict, City_Dict),
-    write_ln(City_Dict),
-    write_ln(Cities),
-    write_ln(City),
     get_city_star(City_Dict, Category, Star),
-    write_ln(Star),
-    write_ln(Best_star),
-    write_ln(Best_city),
-    write_ln(Star > Best_star),
-    X = (Star > Best_star),
-    write_ln(X),
-    (X -> Best_star = Star, Best_city = City; Best_star = Best_star, Best_city = Best_city),
-    write_ln(X),
-    write_ln(Best_city),
-    loop(Cities, Dict, Category, Best_star, Best_city),
-    write_ln(Star).
+    (
+        Star > Best_star -> 
+            New_Best_star = Star, New_Best_city = City;
+            New_Best_star = Best_star, New_Best_city = Best_city
+    ),
+    loop(Cities, Dict, Category, New_Best_star, New_Best_city).
 
 
 get_city_star(City, Category, Star) :-
