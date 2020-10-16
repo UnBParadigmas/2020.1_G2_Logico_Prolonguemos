@@ -23,12 +23,41 @@ get_city_cat([City|Cities], State):-
     search([state-State, city-City], Docs),
     CatDict = city{},
     write_ln(City),
-    print_cat(Docs, CatDict),
+    print_cat(Docs, CatDict, CatOut),
+    write_ln(CatOut),
     get_city_cat(Cities, State).
 
-increment(DictIn,DictOut,Key) :-
-    (get_dict(Key,DictIn,X) -> succ(X,XX) ; XX=1),
+increment(DictIn, DictOut, Key, Star) :-
+    (get_dict(Key,DictIn,X) -> is(XX, X +Star) ; XX=Star),
     put_dict(Key,DictIn,XX,DictOut).
+
+get_cities([], Cities, A) :- A = Cities.
+get_cities([Doc|Docs], Cities, A):-
+    bson:doc_get(Doc, city, City),
+    ord_add_element(Cities, City, NewSet),    
+    get_cities(Docs, NewSet, A).
+
+print_cat([], CatDict, CatOut):- CatOut = CatDict.
+print_cat([Doc|Docs], CatDict, CatOut) :-
+    bson:doc_get(Doc, categories, Categories),
+    bson:doc_get(Doc, stars, Stars),
+    get_categories(Categories, Value),
+    atomic_list_concat(SplitedCategories,', ', Value),
+    add_cat_to_dict(SplitedCategories, CatDict, B, Stars),
+    print_cat(Docs, B, CatOut).
+
+
+
+add_cat_to_dict([], CatDict, B, _) :- B = CatDict.
+add_cat_to_dict([Cat|Cats], CatDict, B, StarDocument):-
+    increment(CatDict, NewDict, Cat, StarDocument),
+    add_cat_to_dict(Cats, NewDict, B, StarDocument).
+
+
+get_categories(+null, Ret) :- Ret = ''.
+get_categories(Value, Ret) :-
+    Ret = Value.
+
 
 % {
 %     city1: {
@@ -40,38 +69,6 @@ increment(DictIn,DictOut,Key) :-
 %         cat2: 4
 %     }
 % }
-
-get_cities([], Cities, A) :- A = Cities.
-get_cities([Doc|Docs], Cities, A):-
-    bson:doc_get(Doc, city, City),
-    ord_add_element(Cities, City, NewSet),    
-    get_cities(Docs, NewSet, A).
-
-print_cat([], _).
-print_cat([Doc|Docs], CatDict) :-
-    bson:doc_get(Doc, categories, Categories),
-    get_categories(Categories, Value),
-    atomic_list_concat(SplitedCategories,', ', Value),
-    add_cat_to_dict(SplitedCategories, CatDict, B),
-    write_ln(B),
-    print_cat(Docs, CatDict).
-
-
-
-add_cat_to_dict([], CatDict, B) :- B = CatDict.
-add_cat_to_dict([Cat|Cats], CatDict, B):-
-    % CatDict = city{x:1}.put([x=0]),
-    increment(CatDict, NewDict, Cat),
-    % write_ln(CatDict),
-    % write_ln(CatDict),
-    add_cat_to_dict(Cats, NewDict, B).
-
-
-get_categories(+null, Ret) :- Ret = ''.
-get_categories(Value, Ret) :-
-    Ret = Value.
-
-
 % bson:doc_get(Result, '_id', object_id(Id)).
 % bson:doc_get(Result, label, Label).
 % bson:doc_get(Result, priority, Priority).
