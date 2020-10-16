@@ -11,7 +11,7 @@ main :-
     write_ln(Cities),
     CityDict = city{},
     get_city_cat(Cities, State, CityDict, Out),
-    write_ln(Out).
+    sort_best(Out, Cities, 'Bakeries').
 
 search(Query, Docs):-
     mongo:new_connection('localhost', 27017, Connection),
@@ -19,6 +19,43 @@ search(Query, Docs):-
     mongo:get_collection(Database, 'business', Collection),
     mongo:find_all(Collection, Query, [], Docs),
     mongo:free_connection(Connection).
+
+sort_best(Dict, Keys, Category) :-
+    write_ln("sorteeee"),
+    Best_city = "Gama",
+    Best_star = 0,
+    loop(Keys, Dict, Category, Best_star, Best_city),
+    write_ln(Best_city),
+    write_ln(Best_star). 
+
+loop([], _, _, _, _) :- write_ln("lupi").
+loop([City|Cities], Dict, Category, Best_star, Best_city) :-
+    write_ln("oi"),
+    get_dict(City, Dict, City_Dict),
+    write_ln(City_Dict),
+    write_ln(Cities),
+    write_ln(City),
+    get_city_star(City_Dict, Category, Star),
+    write_ln(Star),
+    write_ln(Best_star),
+    write_ln(Best_city),
+    write_ln(Star > Best_star),
+    X = (Star > Best_star),
+    write_ln(X),
+    (X -> Best_star = Star, Best_city = City; Best_star = Best_star, Best_city = Best_city),
+    write_ln(X),
+    write_ln(Best_city),
+    loop(Cities, Dict, Category, Best_star, Best_city),
+    write_ln(Star).
+
+
+get_city_star(City, Category, Star) :-
+    (get_dict(Category, City, X) -> Star = X; Star = 0).
+
+get_city(+null, Ret) :- Ret = category{}.
+get_city(Value, Ret) :-
+    Ret = Value.
+  
 
 get_city_cat([], _, CityDict, Out) :- Out = CityDict.
 get_city_cat([City|Cities], State, CityDict, Out):-
@@ -46,7 +83,6 @@ print_cat([Doc|Docs], CatDict, CatOut) :-
     atomic_list_concat(SplitedCategories,', ', Value),
     add_cat_to_dict(SplitedCategories, CatDict, B, Stars),
     print_cat(Docs, B, CatOut).
-
 
 
 add_cat_to_dict([], CatDict, B, _) :- B = CatDict.
