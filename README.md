@@ -30,17 +30,17 @@ Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcioname
 
 ## Instalação
 
-__Importante__: Para não ocorrer nenhum tipo de incompatibilidade instale a versão do Swi-Prolog.
+<p align="justify"><strong>Importante:</strong> Para não ocorrer nenhum tipo de incompatibilidade instale a versão do Swi-Prolog.
 
 - __swi-prolog=7.6.4+dfsg-1build1__
 
-Para poder instalar rode o seguinte comando:
+<p align="justify">Para poder instalar rode o seguinte comando:
 
 ``` sh
 sudo apt-get install swi-prolog=7.6.4+dfsg-1build1
 ```
 
-Fazemos uso das seguintes dependências:
+<p align="justify">Fazemos uso das seguintes dependências:
 
 #### Git
 
@@ -53,43 +53,70 @@ sudo apt-get install git
 sudo apt-get install gcc
 ```
 
-#### Prolongo
-
-- https://github.com/khueue/prolongo
-
-#### Mongo
-
-- https://www.mongodb.com/
-
 #### Docker
+
+<p align="justify">Afim de não ter nenhum tipo de impasse optamos por criar um docker para podermos ter um ambiente adequado e estavel para rodar o banco de dados projeto. Veja o link abaixo para a instalação.
 
 - https://docs.docker.com/engine/install/
 
-Afim de não ter nenhum tipo de impasse optamos por criar um docker para podermos ter um ambiente adequado e estavel para rodar o projeto.
+#### Mongo
+
+<p align="justify">Utilizamos o Mongo para o banco de dados do projeto, ele roda em um container via <strong>docker-compose</strong>. Veja no <a href="#passo2uso">passo 2 do uso</a> como subir o Mongo.
+
+- https://www.mongodb.com/
+
+#### Prolongo
+
+<p align="justify">Biblioteca utilizada para acesso ao banco de dados Mongo, essa biblioteca é baixada pelo comando <strong> make lib</strong>, no <a href="#passo3uso">passo 3 do uso</a>. Veja abaixo o link do repositório do projeto da biblioteca. 
+
+- https://github.com/khueue/prolongo
+
+
 
 ## Uso
-Para utilizar nosso projeto, siga as seguintes instruções:
+<p align="justify">Para utilizar nosso projeto, siga as seguintes instruções:
 
-1. Baixe o DataSet da Yelp;
-1.1. Dentro da pasta crie uma pasta na raiz chamada yelp, caso não exista;
-1.2. Cole o arquivo do DataSet na pasta yelp/ -- tem formato .tar;
-2. Rode o comando ``` docker-compose up -d``` para criar o container do mongo em sua maquina;
-2.1. Rode o comando ``` make db ``` para extrair e importar os dados para dentro do container do mongo;
-3. Rode o comando ``` make lib ``` para clonar as bibliotecas utilizadas no projeto;
-4. Agora é necessário que as bibliotecas sejam compiladas, para isso rode os seguintes comandos:
-__OBS__: rode a partir da raiz do repositório;
-4.1. ``` cd lib/prolog-bson && make && cd ../prolongo/ && make```
+1. <p align="justify">Baixe o DataSet da Yelp e salve o arquivo na pasta <strong>/yelp</strong> (O arquivo deve estar no formato <strong>.tar</strong>);
+
+2. <p align="justify" id="passo2uso">Crie e popule o banco de dados com os dados da yelp 
+    
+    1. <p align="justify">Suba o container do mongo em sua maquina:
+
+        ``` sh
+        docker-compose up -d
+        ``` 
+
+    2. <p align="justify">Importe os dados da yelp para o banco de dados:
+
+        ``` sh
+        make db
+        ``` 
+
+3. <p align="justify" id="passo3uso"> Baixe as bibliotecas utilizadas no projeto:
+
+    ``` sh
+    make lib
+    ``` 
+
+4. <p align="justify">Agora é necessário que as bibliotecas sejam compiladas, para isso rode o seguinte comando:
+
+    __OBS__: Rode a partir da raiz do repositório;
+
+    ``` sh
+    cd lib/prolog-bson && make && cd ../prolongo/ && make
+    ```
+
 <p align="justify"><strong>OBS</strong>: Nesta etapa poderá acontecer o erro mencionado em <strong>Possíveis Erros</strong>. Devido a versão do gcc da maquina o Makefile da lib prolog-bson poderá dar erro.
 
 ### Possíveis Erros
 
 ![](./assert/error/build_error.jpg)
 
-<p align="justify"> Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> do MakeFile.
+<p align="justify">Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> do MakeFile.
 
 #### Rodar o projeto 
 
-Para rodar o projeto, a partir da raiz do repositório rode o seguinte comando:
+<p align="justify">Para rodar o projeto, a partir da raiz do repositório rode o seguinte comando:
 
 ``` sh
 swipl main.pl
@@ -101,7 +128,7 @@ ou
 make run
 ```
 
-Em seguida dentro do terminal interativo do Swi-Prolog rode o seguinte comando para rodar os scripts do projeto:
+<p align="justify">Em seguida dentro do terminal interativo do Swi-Prolog rode o seguinte comando para rodar os scripts do projeto:
 
 ```sh
 main.
@@ -111,11 +138,11 @@ main.
 Adicione 1 ou mais vídeos com a execução do projeto.
 
 ## Outros 
-O Dataset utilizado pela equipe está disponível logo abaixo, deve ser baixado no formato __JSON__:
+<p align="justify">O Dataset utilizado pela equipe está disponível logo abaixo, deve ser baixado no formato <strong>JSON</strong>:
 
 - https://www.yelp.com/dataset/download
 
-__OBS__: Para que seja realizado o download do Dataset o site necessita de alguns dados. Porém não precisa ser dados verídicos. A finalidade deste formulário é desconhecido. Entretanto, este Dataset já foi utilizado antes em outras discíplinas e não foi apresentado nenhum tipo de rísco pelo uso e pela exposição dos dados necessários no formulário.
+<p align="justify"><strong>OBS:</strong> Para que seja realizado o download do Dataset o site necessita de alguns dados. Porém não precisa ser dados verídicos. A finalidade deste formulário é desconhecido. Entretanto, este Dataset já foi utilizado antes em outras discíplinas e não foi apresentado nenhum tipo de rísco pelo uso e pela exposição dos dados necessários no formulário.
 
 ## Fontes
 
