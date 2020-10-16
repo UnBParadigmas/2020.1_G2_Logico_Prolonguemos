@@ -3,13 +3,15 @@
 :- use_module(mongo(mongo), []).
 
 main :- 
-    State = 'NY',
+    State = 'SC',
     search([state-State], Docs),
     CitiesList = [],
     ord_empty(CitiesList),
     get_cities(Docs, CitiesList, Cities),
     write_ln(Cities),
-    get_city_cat(Cities, State).
+    CityDict = city{},
+    get_city_cat(Cities, State, CityDict, Out),
+    write_ln(Out).
 
 search(Query, Docs):-
     mongo:new_connection('localhost', 27017, Connection),
@@ -18,14 +20,13 @@ search(Query, Docs):-
     mongo:find_all(Collection, Query, [], Docs),
     mongo:free_connection(Connection).
 
-get_city_cat([], _).
-get_city_cat([City|Cities], State):-
+get_city_cat([], _, CityDict, Out) :- Out = CityDict.
+get_city_cat([City|Cities], State, CityDict, Out):-
     search([state-State, city-City], Docs),
-    CatDict = city{},
-    write_ln(City),
+    CatDict = cat{},
     print_cat(Docs, CatDict, CatOut),
-    write_ln(CatOut),
-    get_city_cat(Cities, State).
+    put_dict(City, CityDict, CatOut, DictOut),
+    get_city_cat(Cities, State, DictOut, Out).
 
 increment(DictIn, DictOut, Key, Star) :-
     (get_dict(Key,DictIn,X) -> is(XX, X +Star) ; XX=Star),
