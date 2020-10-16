@@ -12,7 +12,7 @@ main :-
     write_ln(Cities),
     CityDict = city{},
     get_city_cat(Cities, State, CityDict, Out),
-    sort_best(Out, Cities, 'Bakeries', 3).
+    sort_best(State, Out, Cities, 'Bakeries', 3, Result_List).
 
 search(Query, Docs):-
     mongo:new_connection('localhost', 27017, Connection),
@@ -21,17 +21,17 @@ search(Query, Docs):-
     mongo:find_all(Collection, Query, [], Docs),
     mongo:free_connection(Connection).
 
-sort_best(_, _, _, 0).
-sort_best(Dict, Keys, Category, Count) :-
+sort_best(State, _, _, Category, 0, Final_List) :- result(State, Category, Final_List).
+sort_best(State, Dict, Keys, Category, Count, Result_List) :-
     write('Category: '),
     writeln(Category),    
     Best_city = "",
     Best_star = 0.0,
     search_loop(Keys, Dict, Category, Best_star, Best_city, Result),
-    write_ln(Result),
+    append(Result_List, [Result], New_List),
     select(Result, Keys, Remaining_keys),
     New_count is Count - 1,
-    sort_best(Dict, Remaining_keys, Category, New_count).
+    sort_best(State, Dict, Remaining_keys, Category, New_count, New_List).
 
 
 search_loop([], _, _, Best_star, Best_city, Result) :- Result = Best_city.
@@ -46,10 +46,8 @@ search_loop([City|Cities], Dict, Category, Best_star, Best_city, Result) :-
     search_loop(Cities, Dict, Category, New_Best_star, New_Best_city, Result).
     
 
-% A ideia aqui eh printar o resultado da lista Best_Dict, ela sera chamada na main
-% result(Result, Keys) :-
-%     Result = Keys,
-%     delete('Param1', 'Param2', 'Param3')
+result(State, Category, Result_List) :-
+    format("As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w", [Result_List, Category, State]).
     
 
 
