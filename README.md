@@ -36,7 +36,9 @@ __Importante__: Para não ocorrer nenhum tipo de incompatibilidade instale a ver
 
 Para poder instalar rode o seguinte comando:
 
+``` sh
 sudo apt-get install swi-prolog=7.6.4+dfsg-1build1
+```
 
 Fazemos uso das seguintes dependências:
 
@@ -81,7 +83,7 @@ __OBS__: rode a partir da raiz do repositório;
 
 ### Possíveis Erros
 
-[](./assert/error/build_error.jpg)
+![](./assert/error/build_error.jpg)
 
 <p align="justify"> Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> do MakeFile.
 
