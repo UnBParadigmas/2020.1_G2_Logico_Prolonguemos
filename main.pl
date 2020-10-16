@@ -3,6 +3,7 @@
 :- use_module(mongo(mongo), []).
 
 main :- 
+    interface(),
     State = 'SC',
     search([state-State], Docs),
     CitiesList = [],
@@ -11,7 +12,7 @@ main :-
     write_ln(Cities),
     CityDict = city{},
     get_city_cat(Cities, State, CityDict, Out),
-    sort_best(Out, Cities, 'Bakeries').
+    sort_best(Out, Cities, 'Bakeries', 3).
 
 search(Query, Docs):-
     mongo:new_connection('localhost', 27017, Connection),
@@ -20,15 +21,21 @@ search(Query, Docs):-
     mongo:find_all(Collection, Query, [], Docs),
     mongo:free_connection(Connection).
 
-sort_best(Dict, Keys, Category) :-
+sort_best(_, _, _, 0).
+sort_best(Dict, Keys, Category, Count) :-
     write('Category: '),
     writeln(Category),    
     Best_city = "",
     Best_star = 0.0,
-    loop(Keys, Dict, Category, Best_star, Best_city).
+    search_loop(Keys, Dict, Category, Best_star, Best_city, Result),
+    write_ln(Result),
+    select(Result, Keys, Remaining_keys),
+    New_count is Count - 1,
+    sort_best(Dict, Remaining_keys, Category, New_count).
 
-loop([], _, _, Best_star, Best_city) :- write_ln(Best_city), write_ln(Best_star).
-loop([City|Cities], Dict, Category, Best_star, Best_city) :-
+
+search_loop([], _, _, Best_star, Best_city, Result) :- Result = Best_city.
+search_loop([City|Cities], Dict, Category, Best_star, Best_city, Result) :-
     get_dict(City, Dict, City_Dict),
     get_city_star(City_Dict, Category, Star),
     (
@@ -36,7 +43,14 @@ loop([City|Cities], Dict, Category, Best_star, Best_city) :-
             New_Best_star = Star, New_Best_city = City;
             New_Best_star = Best_star, New_Best_city = Best_city
     ),
-    loop(Cities, Dict, Category, New_Best_star, New_Best_city).
+    search_loop(Cities, Dict, Category, New_Best_star, New_Best_city, Result).
+    
+
+% A ideia aqui eh printar o resultado da lista Best_Dict, ela sera chamada na main
+% result(Result, Keys) :-
+%     Result = Keys,
+%     delete('Param1', 'Param2', 'Param3')
+    
 
 
 get_city_star(City, Category, Star) :-
@@ -85,6 +99,16 @@ get_categories(+null, Ret) :- Ret = ''.
 get_categories(Value, Ret) :-
     Ret = Value.
 
+
+interface() :-
+    write_ln("______Sugestoes Prolongadas________"), nl,
+    write_ln("  Selecione a opcao desejada: "), nl,
+    write_ln("[1] - Ver lista de cidades"),
+    write_ln("[2] - Buscar por melhor restaurante").
+    % read(X).
+
+interface_entrada() :- 
+    write_ln("Digite a sigla da cidade que deseja buscar").
 
 % {
 %     city1: {
