@@ -3,11 +3,7 @@
 :- use_module(mongo(mongo), []).
 
 main :- 
-    state_selection(State, Docs),
-    interface(State, Docs).
-    % get_city_list(Docs, Cities),
-    % write_ln(Cities),
-    % show_best_category(Cities, State, 'Bakeries').
+    state_selection(_, _).
 
 
 search(Query, Docs):-
@@ -19,38 +15,36 @@ search(Query, Docs):-
 
 sort_best(State, _, _, Category, 0, Result_List) :- result(State, Category, Result_List).
 sort_best(State, Dict, Keys, Category, Count, Result_List) :-
-    Best_city = "",
+    Best_city = '',
     Best_star = 0.0,
     search_loop(Keys, Dict, Category, Best_star, Best_city, Result),
-    append(Result_List, [Result], New_List),
-    select(Result, Keys, Remaining_keys),
-    New_count is Count - 1,
-    format("O Count ~w", [Count]),
-    format("NEEEEWWWWWWWWW  ~w", [New_count]), nl,
+    (
+        Result = '' ->
+
+            New_count = 0,
+            New_List = Result_List;
+            append(Result_List, [Result], New_List),
+            select(Result, Keys, Remaining_keys),
+            New_count is Count - 1
+    ),
     sort_best(State, Dict, Remaining_keys, Category, New_count, New_List).
 
 
-search_loop([], _, _, _, Best_city, Result) :- Result = Best_city, write_ln("Fim do Loop"), write_ln(Result).
+search_loop([], _, _, _, Best_city, Result) :- Result = Best_city.
 search_loop([City|Cities], Dict, Category, Best_star, Best_city, Result) :-
     get_dict(City, Dict, City_Dict),
     get_city_star(City_Dict, Category, Star),
-    write_ln(Cities),
-    write_ln(City_Dict),
-    write_ln(Best_star),
-    write_ln(Star), nl,
     (
         Star > Best_star -> 
             New_Best_star = Star, New_Best_city = City;
             New_Best_star = Best_star, New_Best_city = Best_city
     ),
-    write_ln(New_Best_star),
-    write_ln(New_Best_city), nl,
     search_loop(Cities, Dict, Category, New_Best_star, New_Best_city, Result).
 
 
-result(State, Category, []) :- format("A categoria ~w nao existe no Estado ~w", [Category, State]), nl.
+result(State, Category, []) :- format('A categoria ~w nao existe no Estado ~w', [Category, State]), nl.
 result(State, Category, Result_List) :-
-    format("As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w", [Result_List, Category, State]), nl.
+    format('As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w', [Result_List, Category, State]), nl.
     
 
 get_city_star(City, Category, Star) :-
@@ -102,24 +96,30 @@ get_categories(Value, Ret) :-
 
 interface(State, Docs) :-
     nl,
-    write_ln("______Sugestoes Prolongadas________"), nl,
-    write_ln("  Selecione a opcao desejada: "), nl,
-    write_ln("[1] - Ver lista de cidades"),
-    write_ln("[2] - Buscar melhores cidades por categorias"),
-    write_ln("[3] - Redefinir Estado"),
-    write_ln("[4] - Sair :("),
+    write_ln('______Sugestoes Prolongadas________'), nl,
+    write_ln('  Selecione a opcao desejada: '), nl,
+    write_ln('[1] - Ver lista de cidades'),
+    write_ln('[2] - Buscar melhores cidades por categorias'),
+    write_ln('[3] - Redefinir Estado'),
+    write_ln('[4] - Sair :('),
     read(Option),
     switch(Option, [
             1 : show_city_list(State, Docs),
-            2 : show_best_category(State, Docs)
+            2 : show_best_category(State, Docs),
+            3 : state_selection(_, _),
+            4 : exit()
         ]).
 
+exit():-
+    write_ln('Até mais!!'),
+    halt(0).
+    
 show_city_list(State, Docs) :-
     get_city_list(Docs, Cities),
     write_ln(Cities),
     interface(State, Docs).
 
-switch(_, []) :- write_ln("Opção inválida").
+switch(_, []) :- write_ln('Opção inválida').
 switch(X, [Val:Goal|Cases]) :-
     ( X=Val ->
         call(Goal)
@@ -128,9 +128,10 @@ switch(X, [Val:Goal|Cases]) :-
     ).    
 
 state_selection(State, Docs) :- 
-    write_ln("Digite a sigla do Estado que deseja buscar"),
+    write_ln('Digite a sigla do Estado que deseja buscar'),
     read(State),
-    search([state-State], Docs).
+    search([state-State], Docs),
+    interface(State, Docs).
 
 get_city_list(Docs, Cities) :-    
     CitiesList = [],
@@ -139,11 +140,11 @@ get_city_list(Docs, Cities) :-
 
 show_best_category(State, Docs) :-
     nl,
-    write_ln("Digite a categoria que deseja comparar"),
+    write_ln('Digite a categoria que deseja comparar'),
     read(Category),
     get_city_list(Docs, Cities),
     CityDict = city{},
     get_city_cat(Cities, State, CityDict, Out),
-    Count_loop = 2,
+    Count_loop = 3,
     sort_best(State, Out, Cities, Category, Count_loop, _),
     interface(State, Docs).
