@@ -26,7 +26,8 @@
 <p align="justify"> Para podermos realizar os tratamentos em Prolog utilizamos o <strong>Prolongo</strong>, que é uma biblioteca de mongo compatível com o SWI-Prolog.
 
 ## Screenshots
-Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcionamento.
+![um](./assets/data/opcaoum.png)
+![dois](./assets/data/opcaodois.png)
 
 ## Instalação
 
@@ -111,7 +112,7 @@ sudo apt-get install gcc
 
 ### Possíveis Erros
 
-![](./assert/error/build_error.jpg)
+![](./assets/error/build_error.jpg)
 
 <p align="justify">Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> das FLAGS definidas no MakeFile na pasta da biblioteca.
 
@@ -177,7 +178,7 @@ Temos como funcionalidade:
 - Sair: Função para sair do programa.
 
 ## Vídeo
-Adicione 1 ou mais vídeos com a execução do projeto.
+O Vídeo pode ser acessado nesse [Link](https://youtu.be/Y3r-QRjGB8Q).
 
 ## Outros 
 <p align="justify">O Dataset utilizado pela equipe está disponível logo abaixo, deve ser baixado no formato <strong>JSON</strong>:
@@ -186,17 +187,17 @@ Adicione 1 ou mais vídeos com a execução do projeto.
 
 <p align="justify"><strong>OBS:</strong> Para que seja realizado o download do Dataset o site necessita de alguns dados. Entretanto, este Dataset já foi utilizado antes em outras discíplinas e não foi apresentado nenhum tipo de rísco pelo uso e pela exposição dos dados necessários no formulário.
 
-## ScreenShots
+#### Download Dataset
 
 <p><strong style="color: orange">DataSet</strong></p>
 
-![](./assert/data/download_dataSet.jpg)
+![](./assets/data/download_dataSet.jpg)
 
-![](./assert/data/download_dataSet2.jpg)
+![](./assets/data/download_dataSet2.jpg)
 
 <p><strong style="color: orange">Dados importados no mongo</strong></p>
 
-![](./assert/data/mongo_data.jpg)
+![](./assets/data/mongo_data.jpg)
 
 <!-- ###### Aplicação
 
