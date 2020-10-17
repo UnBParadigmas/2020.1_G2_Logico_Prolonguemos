@@ -76,9 +76,9 @@ sudo apt-get install gcc
 ## Uso
 <p align="justify">Para utilizar nosso projeto, siga as seguintes instruções:
 
-1. <p align="justify">Baixe o DataSet da Yelp e salve o arquivo na pasta <strong>/yelp</strong> (O arquivo deve estar no formato <strong>.tar</strong>);
+1. <p align="justify">Baixe o DataSet da <a href="#downloadDataset">Yelp</a> e salve o arquivo na pasta <strong>/yelp</strong> (O arquivo deve estar no formato <strong>.tar</strong>);
 
-2. <p align="justify" id="passo2uso">Crie e popule o banco de dados com os dados da yelp 
+2. <p align="justify" id="passo2uso">Crie e popule o banco de dados com os dados da yelp;
     
     1. <p align="justify">Suba o container do mongo em sua maquina:
 
@@ -114,7 +114,7 @@ sudo apt-get install gcc
 
 <p align="justify">Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> do MakeFile.
 
-#### Rodar o projeto 
+#### Rodar o projeto
 
 <p align="justify">Para rodar o projeto, a partir da raiz do repositório rode o seguinte comando:
 
@@ -134,6 +134,24 @@ make run
 main.
 ```
 
+## Observações necessárias
+
+<p align="justify">Nós criamos um menu interativo. Viabilizando uma diversidade de dados. Portanto é <strong>necessário</strong>:
+
+- O usuário deve passar como parâmetro o __Estado__;
+- O usuário deve passar como parâmetro a __Categoria__;
+
+__Os parâmetros devem ser passados com aspas simples__.
+
+<p align="justify"><strong>É Case-sensitive, portanto deve passar os parâmetros conforme a listagem que for apresentada ao usuário.</strong>
+
+<p><strong style="color: orange">Exemplo</strong></p>
+
+<p align="justify">Nós disponibilizamos os estados em um arquivo e alguns exemplos de categoria. Caso queira outras categorias, acesse a base de dados atraves do mongo, para visualizar todas as possibilidades.
+
+<p><strong style="color: green">estado: 'SC'</strong></p>
+<p><strong style="color: green">categoria: 'Pets'</strong></p>
+
 ## Vídeo
 Adicione 1 ou mais vídeos com a execução do projeto.
 
@@ -144,7 +162,24 @@ Adicione 1 ou mais vídeos com a execução do projeto.
 
 <p align="justify"><strong>OBS:</strong> Para que seja realizado o download do Dataset o site necessita de alguns dados. Porém não precisa ser dados verídicos. A finalidade deste formulário é desconhecido. Entretanto, este Dataset já foi utilizado antes em outras discíplinas e não foi apresentado nenhum tipo de rísco pelo uso e pela exposição dos dados necessários no formulário.
 
-## Fontes
+## ScreenShots
+
+<p><strong style="color: orange">DataSet</strong></p>
+
+![](./assert/data/download_dataSet.jpg)
+
+![](./assert/data/download_dataSet2.jpg)
+
+<p><strong style="color: orange">Dados importados no mongo</strong></p>
+
+![](./assert/data/mongo_data.jpg)
+
+<!-- ###### Aplicação
+
+![](./funcionamento) -->
+
+
+<h2 id="downloadDataset">Fontes</h2>
 
 1. [Yelp Dataset]( https://www.yelp.com/dataset)
 1. [Docker](https://docs.docker.com/)
