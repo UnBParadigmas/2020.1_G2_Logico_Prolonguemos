@@ -3,16 +3,12 @@
 :- use_module(mongo(mongo), []).
 
 main :- 
-    interface(),
-    State = 'SC',
-    search([state-State], Docs),
-    CitiesList = [],
-    ord_empty(CitiesList),
-    get_cities(Docs, CitiesList, Cities),
-    write_ln(Cities),
-    CityDict = city{},
-    get_city_cat(Cities, State, CityDict, Out),
-    sort_best(State, Out, Cities, 'Bakeries', 3, Result_List).
+    state_selection(State, Docs),
+    interface(State, Docs).
+    % get_city_list(Docs, Cities),
+    % write_ln(Cities),
+    % show_best_category(Cities, State, 'Bakeries').
+
 
 search(Query, Docs):-
     mongo:new_connection('localhost', 27017, Connection),
@@ -21,35 +17,41 @@ search(Query, Docs):-
     mongo:find_all(Collection, Query, [], Docs),
     mongo:free_connection(Connection).
 
-sort_best(State, _, _, Category, 0, Final_List) :- result(State, Category, Final_List).
+sort_best(State, _, _, Category, 0, Result_List) :- result(State, Category, Result_List).
 sort_best(State, Dict, Keys, Category, Count, Result_List) :-
-    write('Category: '),
-    writeln(Category),    
     Best_city = "",
     Best_star = 0.0,
     search_loop(Keys, Dict, Category, Best_star, Best_city, Result),
     append(Result_List, [Result], New_List),
     select(Result, Keys, Remaining_keys),
     New_count is Count - 1,
+    format("O Count ~w", [Count]),
+    format("NEEEEWWWWWWWWW  ~w", [New_count]), nl,
     sort_best(State, Dict, Remaining_keys, Category, New_count, New_List).
 
 
-search_loop([], _, _, Best_star, Best_city, Result) :- Result = Best_city.
+search_loop([], _, _, _, Best_city, Result) :- Result = Best_city, write_ln("Fim do Loop"), write_ln(Result).
 search_loop([City|Cities], Dict, Category, Best_star, Best_city, Result) :-
     get_dict(City, Dict, City_Dict),
     get_city_star(City_Dict, Category, Star),
+    write_ln(Cities),
+    write_ln(City_Dict),
+    write_ln(Best_star),
+    write_ln(Star), nl,
     (
         Star > Best_star -> 
             New_Best_star = Star, New_Best_city = City;
             New_Best_star = Best_star, New_Best_city = Best_city
     ),
+    write_ln(New_Best_star),
+    write_ln(New_Best_city), nl,
     search_loop(Cities, Dict, Category, New_Best_star, New_Best_city, Result).
-    
 
+
+result(State, Category, []) :- format("A categoria ~w nao existe no Estado ~w", [Category, State]), nl.
 result(State, Category, Result_List) :-
-    format("As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w", [Result_List, Category, State]).
+    format("As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w", [Result_List, Category, State]), nl.
     
-
 
 get_city_star(City, Category, Star) :-
     (get_dict(Category, City, X) -> Star = X; Star = 0).
@@ -98,27 +100,50 @@ get_categories(Value, Ret) :-
     Ret = Value.
 
 
-interface() :-
+interface(State, Docs) :-
+    nl,
     write_ln("______Sugestoes Prolongadas________"), nl,
     write_ln("  Selecione a opcao desejada: "), nl,
     write_ln("[1] - Ver lista de cidades"),
-    write_ln("[2] - Buscar por melhor restaurante").
-    % read(X).
+    write_ln("[2] - Buscar melhores cidades por categorias"),
+    write_ln("[3] - Redefinir Estado"),
+    write_ln("[4] - Sair :("),
+    read(Option),
+    switch(Option, [
+            1 : show_city_list(State, Docs),
+            2 : show_best_category(State, Docs)
+        ]).
 
-interface_entrada() :- 
-    write_ln("Digite a sigla da cidade que deseja buscar").
+show_city_list(State, Docs) :-
+    get_city_list(Docs, Cities),
+    write_ln(Cities),
+    interface(State, Docs).
 
-% {
-%     city1: {
-%         cat1: 5,
-%         cat2: 3,
-%     },
-%     city2: {
-%         cat1: 3,
-%         cat2: 4
-%     }
-% }
-% bson:doc_get(Result, '_id', object_id(Id)).
-% bson:doc_get(Result, label, Label).
-% bson:doc_get(Result, priority, Priority).
-% format('~w~26|~w~45|~w~n', [Id,Label,Priority]).
+switch(_, []) :- write_ln("Opção inválida").
+switch(X, [Val:Goal|Cases]) :-
+    ( X=Val ->
+        call(Goal)
+    ;
+        switch(X, Cases)
+    ).    
+
+state_selection(State, Docs) :- 
+    write_ln("Digite a sigla do Estado que deseja buscar"),
+    read(State),
+    search([state-State], Docs).
+
+get_city_list(Docs, Cities) :-    
+    CitiesList = [],
+    ord_empty(CitiesList),
+    get_cities(Docs, CitiesList, Cities).
+
+show_best_category(State, Docs) :-
+    nl,
+    write_ln("Digite a categoria que deseja comparar"),
+    read(Category),
+    get_city_list(Docs, Cities),
+    CityDict = city{},
+    get_city_cat(Cities, State, CityDict, Out),
+    Count_loop = 2,
+    sort_best(State, Out, Cities, Category, Count_loop, _),
+    interface(State, Docs).
