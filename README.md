@@ -19,7 +19,7 @@
 
 <p align="justify">O projeto Prolonguemos foi desenvolvido pelo corpo discente da disciplina de Paradigmas de programação no ano de 2020 pela Universidade de Brasília.
 
-<p align="justify"> Através do DataSet da Yelp, realizamos a classificação de restaurantes por estados e cidades dos Estados Unidos. Evidenciando também os 3 primeiros colocados do ranking.
+<p align="justify"> Através do DataSet da Yelp, realizamos a classificação de estabelecimentos por estados e cidades dos Estados Unidos. Evidenciando até as 3 primeiros cidades colocadas no ranking.
 
 <p align="justify"> Nós utilizamos o <strong>Mongo</strong> para realizar a importação dos dados. Em seguida realizamos os tratamentos necessários em Prolog para determinar nossos fatos.
 
@@ -91,6 +91,7 @@ sudo apt-get install gcc
         ``` sh
         make db
         ``` 
+<p align="justify"><strong>O import dos dados demora um tempo, então busque um café enquanto carrega :)</strong>
 
 3. <p align="justify" id="passo3uso"> Baixe as bibliotecas utilizadas no projeto:
 
@@ -112,7 +113,7 @@ sudo apt-get install gcc
 
 ![](./assert/error/build_error.jpg)
 
-<p align="justify">Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> do MakeFile.
+<p align="justify">Caso o seguinte erro apareça na hora de buildar o <strong>prolog-bson</strong>, é necessário que remova a flag <strong>-ansi</strong> das FLAGS definidas no MakeFile na pasta da biblioteca.
 
 #### Rodar o projeto
 
@@ -145,20 +146,31 @@ __Os parâmetros devem ser passados com aspas simples__.
 
 <p align="justify"><strong>É Case-sensitive, portanto deve passar os parâmetros conforme a listagem que for apresentada ao usuário.</strong>
 
+<p align="justify"><strong>Dependendo o Estado escolhido o carregamento pode demorar um pouco.</strong>
+
 <p><strong style="color: orange">Exemplo</strong></p>
 
-<p align="justify">Nós disponibilizamos os estados em um arquivo e alguns exemplos de categoria. Caso queira outras categorias, acesse a base de dados atraves do mongo, para visualizar todas as possibilidades.
+<p align="justify">As siglas aceitas serão exibidas na tela no momento de inserção.
 
+Alguns exemplos de categoria são: 'Pizza', 'Bakeries', ''. Caso queira outras categorias, acesse a base de dados atraves do mongo, para visualizar todas as possibilidades.
+
+<p><strong style="color: green">estado: 'NY'</strong></p>
+<p><strong style="color: green">categoria: 'Pizza'</strong></p>
+<br>
 <p><strong style="color: green">estado: 'SC'</strong></p>
-<p><strong style="color: green">categoria: 'Pets'</strong></p>
+<p><strong style="color: green">categoria: 'Bakeries'</strong></p>
+<br>
+<p><strong style="color: green">estado: 'SC'</strong></p>
+<p><strong style="color: green">categoria: 'Bakeries'</strong></p>
+
 
 ###### Das funcionalidades do projeto
 
 Temos como funcionalidade:
 
-- Ver lista de cidades: Função que retorna a lista de todas as cidades de acordo com o estado.
+- Ver lista de cidades: Função que retorna a lista de todas as cidades cadastradas no Yelp de acordo com o estado.
 
-- Buscar melhores cidades por categoria: Função que retorna as cidades juntamente do score de acordo com a categoria selecionada.
+- Buscar melhores cidades por categoria: Função que retorna as cidades ordenadas de acordo com o score na categoria selecionada.
 
 - Redefinir Estado: Função para escolher um novo estado para realizar as funções anteriores.
 
@@ -172,7 +184,7 @@ Adicione 1 ou mais vídeos com a execução do projeto.
 
 - https://www.yelp.com/dataset/download
 
-<p align="justify"><strong>OBS:</strong> Para que seja realizado o download do Dataset o site necessita de alguns dados. Porém não precisa ser dados verídicos. A finalidade deste formulário é desconhecido. Entretanto, este Dataset já foi utilizado antes em outras discíplinas e não foi apresentado nenhum tipo de rísco pelo uso e pela exposição dos dados necessários no formulário.
+<p align="justify"><strong>OBS:</strong> Para que seja realizado o download do Dataset o site necessita de alguns dados. Entretanto, este Dataset já foi utilizado antes em outras discíplinas e não foi apresentado nenhum tipo de rísco pelo uso e pela exposição dos dados necessários no formulário.
 
 ## ScreenShots
 
