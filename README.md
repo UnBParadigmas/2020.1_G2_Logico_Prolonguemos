@@ -152,6 +152,18 @@ __Os parâmetros devem ser passados com aspas simples__.
 <p><strong style="color: green">estado: 'SC'</strong></p>
 <p><strong style="color: green">categoria: 'Pets'</strong></p>
 
+###### Das funcionalidades do projeto
+
+Temos como funcionalidade:
+
+- Ver lista de cidades: Função que retorna a lista de todas as cidades de acordo com o estado.
+
+- Buscar melhores cidades por categoria: Função que retorna as cidades juntamente do score de acordo com a categoria selecionada.
+
+- Redefinir Estado: Função para escolher um novo estado para realizar as funções anteriores.
+
+- Sair: Função para sair do programa.
+
 ## Vídeo
 Adicione 1 ou mais vídeos com a execução do projeto.
 
