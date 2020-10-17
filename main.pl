@@ -42,9 +42,11 @@ search_loop([City|Cities], Dict, Category, Best_star, Best_city, Result) :-
     search_loop(Cities, Dict, Category, New_Best_star, New_Best_city, Result).
 
 
-result(State, Category, []) :- format('A categoria ~w nao existe no Estado ~w', [Category, State]), nl.
+result(State, Category, []) :- nl,format('A categoria ~w nao existe no Estado ~w', [Category, State]), nl.
 result(State, Category, Result_List) :-
-    format('As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w', [Result_List, Category, State]), nl.
+    nl,
+    format('As cidades ~w possuem o melhor estabelecimento de ~w do Estado ~w', [Result_List, Category, State]),
+    nl.
     
 
 get_city_star(City, Category, Star) :-
@@ -115,7 +117,8 @@ exit():-
     halt(0).
     
 show_city_list(State, Docs) :-
-    get_city_list(Docs, Cities),
+    get_city_list(Docs, Cities),nl,
+    format('Cidades do Estado ~w:', [State]), nl,
     write_ln(Cities),
     interface(State, Docs).
 
@@ -128,7 +131,9 @@ switch(X, [Val:Goal|Cases]) :-
     ).    
 
 state_selection(State, Docs) :- 
-    write_ln('Digite a sigla do Estado que deseja buscar'),
+    write_ln('Digite a sigla do Estado que deseja buscar. Veja as siglas dos estados na lista abaixo.'),
+    States = ['AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WI','WV','WY'],
+    write_ln(States),
     read(State),
     search([state-State], Docs),
     interface(State, Docs).
