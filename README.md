@@ -178,7 +178,9 @@ Temos como funcionalidade:
 - Sair: Função para sair do programa.
 
 ## Vídeo
-O Vídeo pode ser acessado nesse [Link](https://youtu.be/Y3r-QRjGB8Q).
+O Vídeo pode ser acessado abaixo:
+
+[<img src="https://img.youtube.com/vi/Y3r-QRjGB8Q/maxresdefault.jpg">](https://youtu.be/Y3r-QRjGB8Q)
 
 ## Outros 
 <p align="justify">O Dataset utilizado pela equipe está disponível logo abaixo, deve ser baixado no formato <strong>JSON</strong>:
